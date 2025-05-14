@@ -1,0 +1,62 @@
+const htmlContent = `
+<!DOCTYPE html>
+<html lang='ru'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Интерактивная карта</title>
+    <script src='https://js.api.here.com/v3/3.1/mapsjs-core.js'></script>
+    <script src='https://js.api.here.com/v3/3.1/mapsjs-service.js'></script>
+    <script src='https://js.api.here.com/v3/3.1/mapsjs-ui.js'></script>
+    <script src='https://js.api.here.com/v3/3.1/mapsjs-mapevents.js'></script>
+    <link rel='stylesheet' href='styles.css'>
+</head>
+<body>
+    <div id='map'></div>
+    <script src='script.js'></script>
+</body>
+</html>`;
+
+// Создаем CSS файл
+const cssContent = `
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+#map {
+    width: 100%;
+    height: 100vh;
+}
+`;
+
+// Создаем JavaScript файл
+const jsContent = `
+const platform = new H.service.Platform({
+    apikey: 'YEFfCGxyR1MZyn6_Dyq_XxklF2y1qqJp-FHElZbf-LA'
+});
+
+const defaultLayers = platform.createDefaultLayers();
+const map = new H.Map(
+    document.getElementById('map'),
+    defaultLayers.vector.normal.map,
+    {
+        center: { lat: 55.751244, lng: 37.618423 }, // Москва
+        zoom: 10,
+    }
+);
+
+const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+const ui = H.ui.UI.createDefault(map, defaultLayers);
+
+map.addEventListener('tap', function(evt) {
+    const coords = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
+    console.log(`Координаты: ${coords.lat}, ${coords.lng}`);
+});
+`;
+
+// Выводим файлы в консоль (в реальном проекте их надо создать в файловой системе)
+console.log('index.html:', htmlContent);
+console.log('styles.css:', cssContent);
+console.log('script.js:', jsContent);
